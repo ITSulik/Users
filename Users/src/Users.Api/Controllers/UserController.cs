@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Users.Api.Models;
 using Users.Api.Services;
+using Users.Api.Domain.Users;
 
 namespace Users.Api.Controllers;
 
@@ -9,40 +10,44 @@ namespace Users.Api.Controllers;
 public class UserController(UserService userService) : ControllerBase
 {
     private readonly UserService _userService = userService;
+    
 
     [HttpGet]
-    public IActionResult GetAllUsers() => Ok(_userService.GetAllUsers());
+    public IActionResult GetAllUsers() =>
+    Ok(_userService.GetAllUsers().Select(UserResponse.FromDomainModel));
 
     [HttpGet("{id}")]
     public IActionResult GetUserById(Guid id) =>
-        _userService.GetUserById(id) is { } user ? Ok(user) : NotFound();
+    _userService.GetUserById(id) is { } user
+        ? Ok(UserDetailResponse.FromDomainModel(user))
+        : NotFound();
 
     [HttpPost]
     public IActionResult RegisterUser([FromBody] RegisterUserRequest request)
-    {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
+{
+    if (!ModelState.IsValid)
+        return BadRequest(ModelState);
 
-        var user = _userService.RegisterUser(request);
-        return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
-    }
+    var user = _userService.RegisterUser(request);
+    return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, UserDetailResponse.FromDomainModel(user));
+}
 
     [HttpPut("{id}")]
     public IActionResult UpdateUser(Guid id, [FromBody] UpdateUserRequest request)
-    {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
+{
+    if (!ModelState.IsValid)
+        return BadRequest(ModelState);
 
-        var user = _userService.UpdateUser(id, request);
-        return user is not null ? Ok(user) : NotFound();
-    }
+    var user = _userService.UpdateUser(id, request);
+    return user is not null ? Ok(UserDetailResponse.FromDomainModel(user)) : NotFound();
+}
     [HttpDelete("{id}")]
     public IActionResult DeleteUser(Guid id)
-    {
-        var user = _userService.GetUserById(id);
-        if (user is null) return NotFound();
+{
+    var user = _userService.GetUserById(id);
+    if (user is null) return NotFound();
 
-        _userService.DeleteUser(id);
-        return NoContent();
-    }
+    _userService.DeleteUser(id);
+    return NoContent();
+}
 }

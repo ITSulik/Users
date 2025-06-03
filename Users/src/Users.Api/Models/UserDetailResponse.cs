@@ -1,6 +1,11 @@
-public class UserDetailResponse
+using System;  
+using Users.Api.Domain.Users;
+public sealed record UserDetailResponse
+(
+    Guid Id,
+    string FullName,
+    string Email
+)
 {
-    public Guid Id { get; set; }
-    public string FullName { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
+    public static UserDetailResponse FromDomainModel(User user) => new(user.Id, $"{user.FirstName} {user.LastName}", user.Email);
 }
