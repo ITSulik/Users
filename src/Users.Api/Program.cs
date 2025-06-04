@@ -6,8 +6,9 @@ using Users.Api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 {
+    builder.Services.AddScoped<UserService>();
     builder.Services.AddDbContext<UsersDbContext>(options =>
-        options.UseNpgsql(builder.Configuration.GetConnectionString("UsersDB")));
+        options.UseNpgsql(builder.Configuration.GetConnectionString("UsersDb")));
     builder.Services.AddControllers();
 }
 
