@@ -1,6 +1,6 @@
 using Users.Api.Services;
 using Microsoft.EntityFrameworkCore;
-using Users.Api.Data;
+using Users.Api.Infrastructure.Persistence;
 
 
 

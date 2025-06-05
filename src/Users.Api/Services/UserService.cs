@@ -1,6 +1,6 @@
 using Users.Api.Domain.Users;
 using Users.Api.Models;
-using Users.Api.Data;
+using Users.Api.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
