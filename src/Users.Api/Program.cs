@@ -1,8 +1,14 @@
 using Users.Api.Services;
+using Microsoft.EntityFrameworkCore;
+using Users.Api.Data;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 {
-    builder.Services.AddSingleton<UserService>();
+    builder.Services.AddScoped<UserService>();
+    builder.Services.AddDbContext<UsersDbContext>(options =>
+        options.UseNpgsql(builder.Configuration.GetConnectionString("UsersDb")));
     builder.Services.AddControllers();
 }
 
