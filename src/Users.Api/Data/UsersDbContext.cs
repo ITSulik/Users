@@ -15,9 +15,7 @@ public class UsersDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<User>().HasKey(u => u.Id);
-        modelBuilder.Entity<User>().Property(u => u.FirstName).IsRequired();
-        modelBuilder.Entity<User>().Property(u => u.LastName).IsRequired();
-        modelBuilder.Entity<User>().Property(u => u.Email).IsRequired();
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(UsersDbContext).Assembly);
+        
     }
 }

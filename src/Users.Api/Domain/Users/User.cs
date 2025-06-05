@@ -4,11 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-[Table("Users")]
 public class User
 {
-    public Guid Id;
-    public string FirstName = null!;
-    public string LastName = null!;
-    public string Email = null!;
+    public Guid Id { get; set; }
+    public string FirstName { get; set; } = null!;
+    public string LastName { get; set; } = null!;
+    public string Email { get; set; } = null!;
 }
