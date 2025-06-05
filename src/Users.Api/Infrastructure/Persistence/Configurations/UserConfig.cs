@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Users.Api.Domain.Users;
 
-namespace Users.Api.Configurations;
+namespace Users.Api.Infrastructure.Persistence.Configurations;
 
 public class UserConfig : IEntityTypeConfiguration<User>
 {

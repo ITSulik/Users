@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Users.Api.Models;
 using Users.Api.Domain.Users;
 
-namespace Users.Api.Data;
+namespace Users.Api.Infrastructure.Persistence;
 
 public class UsersDbContext : DbContext
 {
