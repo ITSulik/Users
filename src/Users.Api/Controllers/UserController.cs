@@ -4,6 +4,7 @@ using Users.Api.Services;
 using Users.Api.Domain.Users;
 using System.Threading.Tasks;
 using System.Linq;
+using Users.Api.Exceptions;
 
 namespace Users.Api.Controllers
 {
@@ -24,9 +25,9 @@ namespace Users.Api.Controllers
         public async Task<IActionResult> GetUserById(Guid id)
         {
             var user = await _userService.GetUserById(id);
-            return user is not null 
-                ? Ok(UserDetailResponse.FromDomainModel(user)) 
-                : NotFound();
+            if (user is null) 
+            throw new NotFoundException($"User with ID '{id}' was not found.");
+            return Ok(UserDetailResponse.FromDomainModel(user));
         }
 
         [HttpPost]
@@ -46,17 +47,18 @@ namespace Users.Api.Controllers
                 return BadRequest(ModelState);
 
             var user = await _userService.UpdateUser(id, request);
-            return user is not null 
-                ? Ok(UserDetailResponse.FromDomainModel(user)) 
-                : NotFound();
+            if (user is null)
+                throw new NotFoundException($"User with ID '{id}' was not found.");
+            return Ok(UserDetailResponse.FromDomainModel(user));
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(Guid id)
         {
             var user = await _userService.GetUserById(id);
-            if (user is null) 
-                return NotFound();
+            
+            if (user is null)
+                throw new NotFoundException($"User with ID '{id}' was not found.");
 
             await _userService.DeleteUser(id);
             return NoContent();
